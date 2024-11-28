@@ -57,9 +57,11 @@ def add_phone(client_id, phone):
         conn.commit()
 
 
-def delete_client(client_id):
+
+def delete_phone(conn, client_id, phone_number):
     with conn.cursor() as cur:
-        cur.execute("DELETE FROM clients WHERE client_id = %s;", (client_id,))
+        cur.execute("DELETE FROM phones WHERE client_id = %s AND phone_number = %s",
+                    (client_id, phone_number))
         conn.commit()
 
 
@@ -68,6 +70,7 @@ def delete_client(conn, client_id):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM clients WHERE client_id = %s;", (client_id,))
         conn.commit()
+
 
 def update_client(client_id, first_name=None, last_name=None, email=None):
     with conn.cursor() as cur:
@@ -78,6 +81,7 @@ def update_client(client_id, first_name=None, last_name=None, email=None):
         if email:
             cur.execute("UPDATE clients SET email = %s WHERE client_id = %s;", (email, client_id))
         conn.commit()
+
 
 def find_client(first_name=None, last_name=None, email=None):
     with conn.cursor() as cur:
