@@ -1,6 +1,5 @@
 import psycopg2
-from config import host, database, user, password
-
+from config import host,database,user,password
 
 conn = psycopg2.connect(
     host=host,
@@ -9,15 +8,14 @@ conn = psycopg2.connect(
     password=password
 )
 
+
 def create_database(conn):
     with conn.cursor() as cur:
-        # Удаление таблиц для нового заполнения
         cur.execute("""
         DROP TABLE IF EXISTS phones;
         DROP TABLE IF EXISTS clients;
         """)
 
-        
         cur.execute("""
         CREATE TABLE IF NOT EXISTS clients (
             client_id SERIAL PRIMARY KEY,
@@ -27,15 +25,14 @@ def create_database(conn):
         );
         """)
 
-        
         cur.execute("""
         CREATE TABLE IF NOT EXISTS phones (
             phone_id SERIAL PRIMARY KEY,
-            client_id INTEGER REFERENCES clients(client_id),
+            client_id INTEGER REFERENCES clients(client_id) ON DELETE CASCADE,
             phone_number VARCHAR(20)
         );
         """)
-        
+
         conn.commit()
 
 
@@ -48,6 +45,7 @@ def add_client(first_name, last_name, email):
         conn.commit()
         return client_id
 
+
 def add_phone(client_id, phone):
     with conn.cursor() as cur:
         cur.execute("""
@@ -57,16 +55,14 @@ def add_phone(client_id, phone):
         conn.commit()
 
 
-
-def delete_phone(conn, client_id, phone_number):
+def delete_phone(client_id, phone_number):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM phones WHERE client_id = %s AND phone_number = %s",
                     (client_id, phone_number))
         conn.commit()
 
 
-
-def delete_client(conn, client_id):
+def delete_client(client_id):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM clients WHERE client_id = %s;", (client_id,))
         conn.commit()
@@ -90,7 +86,7 @@ def find_client(first_name=None, last_name=None, email=None):
             WHERE first_name LIKE %s OR 
             last_name LIKE %s OR 
             email LIKE %s;
-        """,(first_name,last_name,email))
+        """, (first_name, last_name, email))
         clients = cur.fetchall()
         return clients
 
