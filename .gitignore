@@ -1,1 +1,9 @@
 config.py
+.idea/.gitignore
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/postgresnetology.iml
+.idea/vcs.xml
+Clients_db.py
+__pycache__/config.cpython-312.pyc
