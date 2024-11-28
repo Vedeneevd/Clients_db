@@ -1,7 +1,7 @@
 import psycopg2
 from config import host, database, user, password
 
-# Создаем подключение к БД
+
 conn = psycopg2.connect(
     host=host,
     database=database,
@@ -17,7 +17,7 @@ def create_database(conn):
         DROP TABLE IF EXISTS clients;
         """)
 
-        # Создание таблицы для клиентов
+        
         cur.execute("""
         CREATE TABLE IF NOT EXISTS clients (
             client_id SERIAL PRIMARY KEY,
@@ -27,7 +27,7 @@ def create_database(conn):
         );
         """)
 
-        # Создание таблицы для телефонов
+        
         cur.execute("""
         CREATE TABLE IF NOT EXISTS phones (
             phone_id SERIAL PRIMARY KEY,
@@ -35,12 +35,10 @@ def create_database(conn):
             phone_number VARCHAR(20)
         );
         """)
-
-        # Коммит изменений
+        
         conn.commit()
 
 
-# Функция, позволяющая добавить нового клиента
 def add_client(first_name, last_name, email):
     with conn.cursor() as cur:
         cur.execute("INSERT INTO clients (first_name, last_name, email) VALUES (%s, %s, %s) RETURNING client_id",
@@ -57,7 +55,6 @@ def add_phone(client_id, phone):
             VALUES (%s, %s);
         """, (client_id, phone))
         conn.commit()
-
 
 
 def delete_client(client_id):
