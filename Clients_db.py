@@ -105,27 +105,3 @@ def select(conn):
                     FROM clients;
                 """)
         print(cur.fetchall())
-
-
-create_database(conn)
-
-    # Добавление клиентов
-client_id1 = add_client("John", "Doe", "john.doe@example.com")
-client_id2 = add_client("Jane", "Smith", "jane.smith@example.com")
-
-    # Добавление телефонов
-add_phone(client_id1, "123-456-7890")
-add_phone(client_id1, "098-765-4321")
-add_phone(client_id2, "555-555-5555")
-
-    # Обновление клиента
-update_client(client_id1, first_name="Jonathan")
-
-    # Поиск клиентов
-print("Поиск клиентов с 'John':", find_client("John"))
-print("Поиск клиентов с 'Jane':", find_client("Jane"))
-
-    # Проверка оставшихся клиентов
-print("Оставшиеся клиенты:", find_client(""))
-
-select(conn)
