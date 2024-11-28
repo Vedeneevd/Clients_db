@@ -62,11 +62,7 @@ def delete_client(client_id):
         cur.execute("DELETE FROM clients WHERE client_id = %s;", (client_id,))
         conn.commit()
 
-def delete_phone(conn, client_id, phone_number):
-    with conn.cursor() as cur:
-        cur.execute("DELETE FROM phones WHERE client_id = %s AND phone_number = %s",
-                    (client_id, phone_number))
-        conn.commit()
+
 
 def delete_client(conn, client_id):
     with conn.cursor() as cur:
